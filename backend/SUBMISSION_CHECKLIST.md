@@ -5,6 +5,7 @@
 ### 1. Database Design and SQL Implementation ✅
 
 #### ✅ Course Table
+
 - [x] course_id (Primary Key, Auto-Increment)
 - [x] course_name (VARCHAR)
 - [x] course_code (VARCHAR, Unique)
@@ -13,6 +14,7 @@
 - **File:** `sql/schema.sql`
 
 #### ✅ Enhanced Student Table
+
 - [x] student_id (Primary Key)
 - [x] name, email (with unique constraint)
 - [x] course_id (Foreign Key to courses)
@@ -20,6 +22,7 @@
 - **File:** `sql/schema.sql`
 
 #### ✅ Stored Procedures (OPTIONAL - COMPLETED)
+
 - [x] sp_insert_student_with_course - Insert with validation
 - [x] sp_update_student_details - Update with transaction safety
 - [x] sp_delete_student - Delete with cascade handling
@@ -33,6 +36,7 @@
 ### 2. Backend Features ✅
 
 #### ✅ Add Student with Course Assignment
+
 - [x] Register student with selected course
 - [x] Validate course exists before saving
 - [x] Email uniqueness validation
@@ -41,18 +45,21 @@
 - **Implementation:** `src/controllers/studentController.js` - `createStudent()`
 
 #### ✅ Retrieve Student Details with Course Information
+
 - [x] Fetch all students with course details
 - [x] Return structured JSON format
 - [x] JOIN query to include course information
 - **Implementation:** `src/controllers/studentController.js` - `getAllStudents()`
 
 #### ✅ Retrieve Students Enrolled in a Course
+
 - [x] Fetch students by course ID
 - [x] Validate course exists
 - [x] Return with course metadata
 - **Implementation:** `src/controllers/studentController.js` - `getStudentsByCourse()`
 
 #### ✅ Update Student Details with Course Modification
+
 - [x] Update student information
 - [x] Allow course reassignment
 - [x] Validate new course exists
@@ -60,6 +67,7 @@
 - **Implementation:** `src/controllers/studentController.js` - `updateStudent()`
 
 #### ✅ Delete Students and Handle Course Implications
+
 - [x] Delete student record
 - [x] Handle foreign key relationship (user account)
 - [x] Transaction management to ensure data consistency
@@ -67,6 +75,7 @@
 - **Implementation:** `src/models/Student.js` - `delete()`
 
 #### ✅ Transaction Management (OPTIONAL - COMPLETED)
+
 - [x] Transaction support in delete operations
 - [x] Rollback on errors
 - [x] Data consistency guaranteed
@@ -78,6 +87,7 @@
 ### 3. Authentication and Authorization ✅
 
 #### ✅ Admin Role
+
 - [x] Can perform all CRUD operations
 - [x] Access to all student records
 - [x] Access to all course records
@@ -85,6 +95,7 @@
 - **Implementation:** `src/middleware/authorize.js`
 
 #### ✅ Student Role
+
 - [x] Can view own details
 - [x] Can view own course information
 - [x] Restricted from admin operations
@@ -92,6 +103,7 @@
 - **Implementation:** `src/middleware/authorize.js`, `src/controllers/studentController.js` - `getMyDetails()`
 
 #### ✅ JWT Authentication
+
 - [x] Token-based authentication
 - [x] Secure password hashing
 - [x] Token expiration handling
@@ -103,24 +115,28 @@
 ### 4. Development Guidelines ✅
 
 #### ✅ Backend Implementation
+
 - [x] Clean code architecture
 - [x] MVC pattern followed
 - [x] Separation of concerns
 - [x] Middleware for cross-cutting concerns
 
 #### ✅ Database Design
+
 - [x] Proper data types
 - [x] Constraints (PRIMARY KEY, FOREIGN KEY, UNIQUE)
 - [x] Referential integrity maintained
 - [x] Normalized structure
 
 #### ✅ Optimized SQL Queries
+
 - [x] JOIN queries for related data
 - [x] Indexed primary and foreign keys
 - [x] Prepared statements (SQL injection prevention)
 - [x] Efficient query patterns
 
 #### ✅ Technology Stack
+
 - [x] **Language:** JavaScript (Node.js)
 - [x] **Framework:** Express.js
 - [x] **Database:** MySQL
@@ -133,6 +149,7 @@
 ### 5. Bonus: Frontend ✅
 
 #### ✅ Simple Frontend Implementation
+
 - [x] **Framework:** React with Vite
 - [x] Registration form for students
 - [x] Login page
@@ -147,6 +164,7 @@
 ### 6. Submission Guidelines ✅
 
 #### ✅ Documentation
+
 - [x] **README.md** - Complete setup instructions
   - How to set up and run
   - Database schema instructions
@@ -169,6 +187,7 @@
   - `sql/stored_procedures.sql` - Stored procedures
 
 #### ✅ Code Repository
+
 - [x] Project code organized
 - [x] SQL scripts included
 - [x] `.env.example` provided
@@ -176,6 +195,7 @@
 - [x] Clean folder structure
 
 #### ✅ Output Demonstration
+
 - [x] **Postman Collection:** `postman_collection.json`
   - All endpoints included
   - Auto-authentication
@@ -185,6 +205,7 @@
 - [x] **Testing Instructions:** Detailed in `TESTING.md` and `SCREENSHOTS_GUIDE.md`
 
 #### ✅ Best Practices
+
 - [x] Clean, readable, maintainable code
 - [x] Proper validations on all inputs
 - [x] Secure endpoints (JWT authentication)
@@ -216,12 +237,14 @@
 ## 📊 Evaluation Criteria Coverage
 
 ### 1. Database Design ✅
+
 - ✅ Effective use of PRIMARY KEY, FOREIGN KEY, UNIQUE constraints
 - ✅ Proper relationships (1-to-many: Course-Students)
 - ✅ (OPTIONAL COMPLETED) Stored procedures with transaction management
 - ✅ Referential integrity enforced
 
 ### 2. Backend Implementation ✅
+
 - ✅ All required functionality implemented
 - ✅ Comprehensive input validations
 - ✅ Clean, well-documented code
@@ -229,6 +252,7 @@
 - ✅ RESTful API design
 
 ### 3. Optional Bonus ✅
+
 - ✅ User-friendly React frontend
 - ✅ Stored procedures implemented
 - ✅ Transaction management
@@ -239,6 +263,7 @@
 ## 📂 Deliverables Checklist
 
 ### Code Files
+
 - [x] `backend/src/` - Complete backend source code
 - [x] `frontend/src/` - React frontend application
 - [x] `sql/schema.sql` - Database schema
@@ -246,6 +271,7 @@
 - [x] `package.json` - Dependencies and scripts
 
 ### Documentation Files
+
 - [x] `README.md` - Main documentation
 - [x] `TESTING.md` - Testing guide
 - [x] `SCREENSHOTS_GUIDE.md` - Screenshot requirements
@@ -253,6 +279,7 @@
 - [x] `.env.example` - Environment template
 
 ### Testing Files
+
 - [x] `postman_collection.json` - Complete Postman collection
 - [x] Sample test data in schema.sql
 - [x] Default users (admin, students)
@@ -298,19 +325,23 @@ npm run dev
 ### Default Credentials
 
 **Admin:**
+
 - Username: `admin`
 - Password: `admin123`
 
 **Student (John Doe):**
+
 - Username: `john.doe`
 - Password: `student123`
 
 ### API Base URL
+
 ```
 http://localhost:3000/api
 ```
 
 ### Frontend URL
+
 ```
 http://localhost:5173
 ```
