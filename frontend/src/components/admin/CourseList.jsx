@@ -33,6 +33,17 @@ const CourseList = () => {
         }
     };
 
+    const handleDelete = async (id) => {
+        if (window.confirm('Are you sure you want to delete this course?')) {
+            try {
+                await api.delete(`/courses/${id}`);
+                fetchCourses();
+            } catch (err) {
+                alert('Failed to delete course: ' + (err.response?.data?.message || err.message));
+            }
+        }
+    };
+
     if (loading) return <div>Loading courses...</div>;
     if (error) return <div>{error}</div>;
 
@@ -40,55 +51,56 @@ const CourseList = () => {
         <div>
             <h2>Manage Courses</h2>
 
-            <form onSubmit={handleAddCourse} style={{ marginBottom: '20px', padding: '10px', border: '1px solid #eee', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                <div style={{ flex: '1' }}>
+            <form onSubmit={handleAddCourse} className="form-card">
+                <h3>Add New Course</h3>
+                <div className="form-grid">
                     <input
                         placeholder="Course Name"
                         value={newCourse.course_name}
                         onChange={e => setNewCourse({ ...newCourse, course_name: e.target.value })}
                         required
-                        style={{ width: '100%' }}
                     />
-                </div>
-                <div style={{ flex: '1' }}>
                     <input
                         placeholder="Course Code"
                         value={newCourse.course_code}
                         onChange={e => setNewCourse({ ...newCourse, course_code: e.target.value })}
                         required
-                        style={{ width: '100%' }}
                     />
-                </div>
-                <div style={{ flex: '1' }}>
                     <input
-                        placeholder="Duration (e.g. 3 months)"
+                        placeholder="Duration (months)"
+                        type="number"
                         value={newCourse.course_duration}
                         onChange={e => setNewCourse({ ...newCourse, course_duration: e.target.value })}
                         required
-                        style={{ width: '100%' }}
                     />
                 </div>
-                <button type="submit">Add Course</button>
+                <button type="submit" className="btn btn-primary">Add Course</button>
             </form>
 
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                <thead>
-                    <tr style={{ textAlign: 'left', backgroundColor: '#f4f4f4' }}>
-                        <th style={{ padding: '10px' }}>Code</th>
-                        <th style={{ padding: '10px' }}>Name</th>
-                        <th style={{ padding: '10px' }}>Duration</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {courses.map(course => (
-                        <tr key={course.course_id || course.id} style={{ borderBottom: '1px solid #ddd' }}>
-                            <td style={{ padding: '10px' }}>{course.course_code}</td>
-                            <td style={{ padding: '10px' }}>{course.course_name}</td>
-                            <td style={{ padding: '10px' }}>{course.course_duration}</td>
+            <div className="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Duration</th>
+                            <th>Actions</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {courses.map(course => (
+                            <tr key={course.course_id || course.id}>
+                                <td>{course.course_code}</td>
+                                <td>{course.course_name}</td>
+                                <td>{course.course_duration} months</td>
+                                <td>
+                                    <button onClick={() => handleDelete(course.course_id || course.id)} className="btn btn-danger btn-sm">Delete</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };

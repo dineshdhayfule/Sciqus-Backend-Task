@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Student = require('../models/Student');
+const Course = require('../models/Course');
 
 class AuthController {
     // POST /login
@@ -65,9 +66,14 @@ class AuthController {
         try {
             const { name, email, course_id, username, password } = req.body;
 
-            // Validate course exists (Wait - we need Course model access. It is not imported yet?)
-            // We need to import Course model.
-            // Let's assume Course is imported at top.
+            // Validate course exists
+            const course = await Course.findById(course_id);
+            if (!course) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Invalid course. Course does not exist.'
+                });
+            }
 
             // Check if email already exists
             const existingStudent = await Student.findByEmail(email);

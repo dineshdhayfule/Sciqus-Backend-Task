@@ -6,11 +6,21 @@ const StudentList = () => {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    
+    // Add Form State
     const [newStudent, setNewStudent] = useState({
         name: '',
         email: '',
         username: '',
         password: '',
+        course_id: ''
+    });
+
+    // Edit Form State
+    const [editingId, setEditingId] = useState(null);
+    const [editFormData, setEditFormData] = useState({
+        name: '',
+        email: '',
         course_id: ''
     });
 
@@ -44,6 +54,42 @@ const StudentList = () => {
         }
     };
 
+    const handleDelete = async (id) => {
+        if (window.confirm('Are you sure you want to delete this student? This will also delete their user account.')) {
+            try {
+                await api.delete(`/students/${id}`);
+                fetchData();
+            } catch (err) {
+                alert('Failed to delete student: ' + (err.response?.data?.message || err.message));
+            }
+        }
+    };
+
+    const startEdit = (student) => {
+        setEditingId(student.student_id || student.id);
+        setEditFormData({
+            name: student.name,
+            email: student.email,
+            course_id: student.course_id
+        });
+    };
+
+    const cancelEdit = () => {
+        setEditingId(null);
+        setEditFormData({ name: '', email: '', course_id: '' });
+    };
+
+    const handleUpdate = async (e) => {
+        e.preventDefault();
+        try {
+            await api.put(`/students/${editingId}`, editFormData);
+            setEditingId(null);
+            fetchData();
+        } catch (err) {
+            alert('Failed to update student: ' + (err.response?.data?.message || err.message));
+        }
+    };
+
     if (loading) return <div>Loading...</div>;
     if (error) return <div>{error}</div>;
 
@@ -51,9 +97,10 @@ const StudentList = () => {
         <div>
             <h2>Manage Students</h2>
 
-            <form onSubmit={handleAddStudent} style={{ marginBottom: '20px', padding: '10px', border: '1px solid #eee', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {/* Add Student Form */}
+            <form onSubmit={handleAddStudent} className="form-card">
                 <h3>Add New Student</h3>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                <div className="form-grid">
                     <input
                         placeholder="Full Name"
                         value={newStudent.name}
@@ -62,12 +109,13 @@ const StudentList = () => {
                     />
                     <input
                         placeholder="Email"
+                        type="email"
                         value={newStudent.email}
                         onChange={e => setNewStudent({ ...newStudent, email: e.target.value })}
                         required
                     />
                     <input
-                        placeholder="Username (for login)"
+                        placeholder="Username"
                         value={newStudent.username}
                         onChange={e => setNewStudent({ ...newStudent, username: e.target.value })}
                         required
@@ -83,7 +131,6 @@ const StudentList = () => {
                         value={newStudent.course_id}
                         onChange={e => setNewStudent({ ...newStudent, course_id: e.target.value })}
                         required
-                        style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
                     >
                         <option value="">Select Course</option>
                         {courses.map(course => (
@@ -93,29 +140,74 @@ const StudentList = () => {
                         ))}
                     </select>
                 </div>
-                <button type="submit" style={{ alignSelf: 'flex-start', marginTop: '10px' }}>Add Student</button>
+                <button type="submit" className="btn btn-primary">Add Student</button>
             </form>
 
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                <thead>
-                    <tr style={{ textAlign: 'left', backgroundColor: '#f4f4f4' }}>
-                        <th style={{ padding: '10px' }}>ID</th>
-                        <th style={{ padding: '10px' }}>Name</th>
-                        <th style={{ padding: '10px' }}>Email</th>
-                        <th style={{ padding: '10px' }}>Course ID</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {students.map(student => (
-                        <tr key={student.student_id || student.id} style={{ borderBottom: '1px solid #ddd' }}>
-                            <td style={{ padding: '10px' }}>{student.student_id || student.id}</td>
-                            <td style={{ padding: '10px' }}>{student.name}</td>
-                            <td style={{ padding: '10px' }}>{student.email}</td>
-                            <td style={{ padding: '10px' }}>{student.course_id}</td>
+            {/* Student List Table */}
+            <div className="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Course</th>
+                            <th>Actions</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {students.map(student => (
+                            <tr key={student.student_id || student.id}>
+                                {editingId === (student.student_id || student.id) ? (
+                                    // Edit Mode
+                                    <>
+                                        <td>
+                                            <input 
+                                                value={editFormData.name} 
+                                                onChange={e => setEditFormData({...editFormData, name: e.target.value})}
+                                            />
+                                        </td>
+                                        <td>
+                                            <input 
+                                                value={editFormData.email} 
+                                                onChange={e => setEditFormData({...editFormData, email: e.target.value})}
+                                            />
+                                        </td>
+                                        <td>
+                                            <select 
+                                                value={editFormData.course_id} 
+                                                onChange={e => setEditFormData({...editFormData, course_id: e.target.value})}
+                                            >
+                                                {courses.map(course => (
+                                                    <option key={course.course_id || course.id} value={course.course_id || course.id}>
+                                                        {course.course_name}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <button onClick={handleUpdate} className="btn btn-primary btn-sm">Save</button>
+                                            <button onClick={cancelEdit} className="btn btn-secondary btn-sm">Cancel</button>
+                                        </td>
+                                    </>
+                                ) : (
+                                    // View Mode
+                                    <>
+                                        <td>{student.name}</td>
+                                        <td>{student.email}</td>
+                                        <td>
+                                            {student.course_name || courses.find(c => (c.course_id || c.id) === student.course_id)?.course_name || student.course_id}
+                                        </td>
+                                        <td>
+                                            <button onClick={() => startEdit(student)} className="btn btn-warning btn-sm">Edit</button>
+                                            <button onClick={() => handleDelete(student.student_id || student.id)} className="btn btn-danger btn-sm">Delete</button>
+                                        </td>
+                                    </>
+                                )}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };

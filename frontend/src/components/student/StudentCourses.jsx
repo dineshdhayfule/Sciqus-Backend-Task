@@ -2,39 +2,47 @@ import { useState, useEffect } from 'react';
 import api from '../../services/api';
 
 const StudentCourses = () => {
-    const [courses, setCourses] = useState([]);
+    const [student, setStudent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetchCourses();
+        fetchMyDetails();
     }, []);
 
-    const fetchCourses = async () => {
+    const fetchMyDetails = async () => {
         try {
-            const response = await api.get('/courses');
-            setCourses(response.data.data || []);
+            const response = await api.get('/students/me');
+            setStudent(response.data.data);
             setLoading(false);
         } catch (err) {
-            setError('Failed to fetch courses');
+            setError('Failed to fetch your details');
             setLoading(false);
         }
     };
 
-    if (loading) return <div>Loading courses...</div>;
+    if (loading) return <div>Loading...</div>;
     if (error) return <div>{error}</div>;
+    if (!student) return <div>No student data found</div>;
 
     return (
         <div>
-            <h2>Available Courses</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px' }}>
-                {courses.map(course => (
-                    <div key={course.course_id || course.id} style={{ border: '1px solid #ddd', padding: '15px', borderRadius: '8px', background: 'white' }}>
-                        <h3>{course.course_name}</h3>
-                        <p style={{ color: '#666', fontWeight: 'bold' }}>Code: {course.course_code}</p>
-                        <p>Duration: {course.course_duration}</p>
+            <h2>My Profile & Course</h2>
+            <div className="card">
+                <div className="card-section">
+                    <h3>Student Details</h3>
+                    <p><strong>Name:</strong> {student.name}</p>
+                    <p><strong>Email:</strong> {student.email}</p>
+                </div>
+                
+                <div className="card-section">
+                    <h3>Enrolled Course</h3>
+                    <div className="course-card">
+                        <h4>{student.course_name}</h4>
+                        <p><strong>Code:</strong> {student.course_code}</p>
+                        <p><strong>Duration:</strong> {student.course_duration} months</p>
                     </div>
-                ))}
+                </div>
             </div>
         </div>
     );

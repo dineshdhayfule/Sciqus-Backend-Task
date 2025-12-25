@@ -39,7 +39,7 @@ const Register = () => {
 
         // Basic validation
         if (!formData.course_id) {
-            setError('Please calculate a course');
+            setError('Please select a course');
             return;
         }
 
@@ -53,77 +53,74 @@ const Register = () => {
     };
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
-            <h2>Create Student Account</h2>
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', width: '350px', gap: '10px' }}>
-                {error && <div style={{ color: 'red', textAlign: 'center' }}>{error}</div>}
+        <div className="dashboard-container" style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <div className="card" style={{ width: '100%', maxWidth: '450px' }}>
+                <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Create Student Account</h2>
+                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                    {error && <div style={{ color: '#dc3545', textAlign: 'center', padding: '10px', background: '#f8d7da', borderRadius: '4px' }}>{error}</div>}
 
-                <input
-                    id="name"
-                    type="text"
-                    name="name"
-                    autoComplete="name"
-                    placeholder="Full Name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    style={{ padding: '8px' }}
-                />
-                <input
-                    id="email"
-                    type="email"
-                    name="email"
-                    autoComplete="email"
-                    placeholder="Email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    style={{ padding: '8px' }}
-                />
-                <input
-                    id="username"
-                    type="text"
-                    name="username"
-                    autoComplete="username"
-                    placeholder="Username"
-                    value={formData.username}
-                    onChange={handleChange}
-                    required
-                    style={{ padding: '8px' }}
-                />
-                <input
-                    id="password"
-                    type="password"
-                    name="password"
-                    autoComplete="new-password"
-                    placeholder="Password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                    style={{ padding: '8px' }}
-                />
+                    <input
+                        id="name"
+                        type="text"
+                        name="name"
+                        autoComplete="name"
+                        placeholder="Full Name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                    />
+                    <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        autoComplete="email"
+                        placeholder="Email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                    />
+                    <input
+                        id="username"
+                        type="text"
+                        name="username"
+                        autoComplete="username"
+                        placeholder="Username"
+                        value={formData.username}
+                        onChange={handleChange}
+                        required
+                    />
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        autoComplete="new-password"
+                        placeholder="Password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                    />
 
-                <select
-                    id="course_id"
-                    name="course_id"
-                    value={formData.course_id}
-                    onChange={handleChange}
-                    required
-                    style={{ padding: '8px' }}
-                >
-                    <option value="">Select a Course</option>
-                    {courses.map(course => (
-                        <option key={course.course_id || course.id} value={course.course_id || course.id}>
-                            {course.course_name}
-                        </option>
-                    ))}
-                </select>
+                    <select
+                        id="course_id"
+                        name="course_id"
+                        value={formData.course_id}
+                        onChange={handleChange}
+                        required
+                    >
+                        <option value="">Select a Course</option>
+                        {courses.map(course => (
+                            <option key={course.course_id || course.id} value={course.course_id || course.id}>
+                                {course.course_name}
+                            </option>
+                        ))}
+                    </select>
 
-                <button type="submit" style={{ padding: '10px', cursor: 'pointer', backgroundColor: '#28a745', color: 'white', border: 'none' }}>Register</button>
-            </form>
-            <p style={{ marginTop: '15px' }}>
-                Already have an account? <Link to="/login">Login here</Link>
-            </p>
+                    <button type="submit" className="btn btn-primary">Register</button>
+                </form>
+                <p style={{ marginTop: '20px', textAlign: 'center' }}>
+                    Already have an account? <Link to="/login" style={{ color: '#007bff', textDecoration: 'none' }}>Login here</Link>
+                </p>
+            </div>
         </div>
     );
 };

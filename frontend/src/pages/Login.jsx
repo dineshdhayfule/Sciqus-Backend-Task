@@ -23,37 +23,37 @@ const Login = () => {
     };
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', width: '300px', gap: '10px' }}>
-                {error && <div style={{ color: 'red' }}>{error}</div>}
-                <input
-                    id="username"
-                    name="username"
-                    type="text"
-                    autoComplete="username"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                    style={{ padding: '8px' }}
-                />
-                <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    style={{ padding: '8px' }}
-                />
-                <button type="submit" style={{ padding: '10px', cursor: 'pointer' }}>Login</button>
-            </form>
-            <p style={{ marginTop: '15px' }}>
-                Don't have an account? <Link to="/register">Create one</Link>
-            </p>
+        <div className="dashboard-container" style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <div className="card" style={{ width: '100%', maxWidth: '400px' }}>
+                <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Login</h2>
+                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                    {error && <div style={{ color: '#dc3545', textAlign: 'center', padding: '10px', background: '#f8d7da', borderRadius: '4px' }}>{error}</div>}
+                    <input
+                        id="username"
+                        name="username"
+                        type="text"
+                        autoComplete="username"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                    />
+                    <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        autoComplete="current-password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                    <button type="submit" className="btn btn-primary">Login</button>
+                </form>
+                <p style={{ marginTop: '20px', textAlign: 'center' }}>
+                    Don't have an account? <Link to="/register" style={{ color: '#007bff', textDecoration: 'none' }}>Create one</Link>
+                </p>
+            </div>
         </div>
     );
 };
