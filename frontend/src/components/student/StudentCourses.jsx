@@ -1,29 +1,35 @@
-import { useState, useEffect } from 'react';
-import api from '../../services/api';
+import { useEffect, useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
 
-const StudentCourses = () => {
-    const [student, setStudent] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+const StudentCourses = ({ isLoading = false }) => {
+    const { studentProfile, refreshStudentProfile } = useAuth();
+    const [error, setError] = useState('');
 
     useEffect(() => {
-        fetchMyDetails();
-    }, []);
-
-    const fetchMyDetails = async () => {
-        try {
-            const response = await api.get('/students/me');
-            setStudent(response.data.data);
-            setLoading(false);
-        } catch (err) {
-            setError('Failed to fetch your details');
-            setLoading(false);
+        if (!studentProfile) {
+            refreshStudentProfile().catch(() => setError('Failed to fetch your details. Please try again.'));
         }
-    };
+    }, [studentProfile, refreshStudentProfile]);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>{error}</div>;
-    if (!student) return <div>No student data found</div>;
+    if (isLoading) {
+        return (
+            <div className="card subtle-card">
+                <p>Loading your profile...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="card error-card">
+                <p>{error}</p>
+            </div>
+        );
+    }
+
+    if (!studentProfile) {
+        return null;
+    }
 
     return (
         <div>
@@ -31,16 +37,16 @@ const StudentCourses = () => {
             <div className="card">
                 <div className="card-section">
                     <h3>Student Details</h3>
-                    <p><strong>Name:</strong> {student.name}</p>
-                    <p><strong>Email:</strong> {student.email}</p>
+                    <p><strong>Name:</strong> {studentProfile.name}</p>
+                    <p><strong>Email:</strong> {studentProfile.email}</p>
                 </div>
-                
+
                 <div className="card-section">
                     <h3>Enrolled Course</h3>
                     <div className="course-card">
-                        <h4>{student.course_name}</h4>
-                        <p><strong>Code:</strong> {student.course_code}</p>
-                        <p><strong>Duration:</strong> {student.course_duration} months</p>
+                        <h4>{studentProfile.course_name}</h4>
+                        <p><strong>Code:</strong> {studentProfile.course_code}</p>
+                        <p><strong>Duration:</strong> {studentProfile.course_duration} months</p>
                     </div>
                 </div>
             </div>

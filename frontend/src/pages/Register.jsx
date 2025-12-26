@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
 
 const Register = () => {
-    const { register } = useAuth();
+    const { register: registerUser } = useAuth();
     const navigate = useNavigate();
     const [courses, setCourses] = useState([]);
     const [formData, setFormData] = useState({
@@ -17,15 +17,15 @@ const Register = () => {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        // Fetch courses for dropdown
         const fetchCourses = async () => {
             try {
                 const response = await api.get('/courses');
                 setCourses(response.data.data || []);
             } catch (err) {
-                console.error("Failed to fetch courses", err);
+                setError('Unable to load course catalogue.');
             }
         };
+
         fetchCourses();
     }, []);
 
@@ -37,13 +37,12 @@ const Register = () => {
         e.preventDefault();
         setError('');
 
-        // Basic validation
         if (!formData.course_id) {
             setError('Please select a course');
             return;
         }
 
-        const result = await register(formData);
+        const result = await registerUser(formData);
 
         if (result.success) {
             navigate('/dashboard');
@@ -53,73 +52,91 @@ const Register = () => {
     };
 
     return (
-        <div className="dashboard-container" style={{ justifyContent: 'center', alignItems: 'center' }}>
-            <div className="card" style={{ width: '100%', maxWidth: '450px' }}>
-                <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Create Student Account</h2>
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                    {error && <div style={{ color: '#dc3545', textAlign: 'center', padding: '10px', background: '#f8d7da', borderRadius: '4px' }}>{error}</div>}
+        <div className="auth-wrapper">
+            <div className="auth-card">
+                <section className="auth-panel">
+                    <p className="eyebrow">Start learning</p>
+                    <h2>Create your student profile</h2>
+                    <p className="subtitle">Pick a course, receive dashboard access, and begin tracking your progress.</p>
 
-                    <input
-                        id="name"
-                        type="text"
-                        name="name"
-                        autoComplete="name"
-                        placeholder="Full Name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                    />
-                    <input
-                        id="email"
-                        type="email"
-                        name="email"
-                        autoComplete="email"
-                        placeholder="Email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                    />
-                    <input
-                        id="username"
-                        type="text"
-                        name="username"
-                        autoComplete="username"
-                        placeholder="Username"
-                        value={formData.username}
-                        onChange={handleChange}
-                        required
-                    />
-                    <input
-                        id="password"
-                        type="password"
-                        name="password"
-                        autoComplete="new-password"
-                        placeholder="Password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                    />
+                    <form onSubmit={handleSubmit} className="stack">
+                        {error && <div className="form-alert">{error}</div>}
+                        <label htmlFor="name">Full name</label>
+                        <input
+                            id="name"
+                            type="text"
+                            name="name"
+                            autoComplete="name"
+                            placeholder="Ada Lovelace"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required
+                        />
+                        <label htmlFor="email">Email</label>
+                        <input
+                            id="email"
+                            type="email"
+                            name="email"
+                            autoComplete="email"
+                            placeholder="ada@example.com"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                        />
+                        <label htmlFor="username">Username</label>
+                        <input
+                            id="username"
+                            type="text"
+                            name="username"
+                            autoComplete="username"
+                            placeholder="ada.lovelace"
+                            value={formData.username}
+                            onChange={handleChange}
+                            required
+                        />
+                        <label htmlFor="password">Password</label>
+                        <input
+                            id="password"
+                            type="password"
+                            name="password"
+                            autoComplete="new-password"
+                            placeholder="Create a secure password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                        />
+                        <label htmlFor="course_id">Select a course</label>
+                        <select
+                            id="course_id"
+                            name="course_id"
+                            value={formData.course_id}
+                            onChange={handleChange}
+                            required
+                        >
+                            <option value="">Choose from catalogue</option>
+                            {courses.map(course => (
+                                <option key={course.course_id || course.id} value={course.course_id || course.id}>
+                                    {course.course_name}
+                                </option>
+                            ))}
+                        </select>
 
-                    <select
-                        id="course_id"
-                        name="course_id"
-                        value={formData.course_id}
-                        onChange={handleChange}
-                        required
-                    >
-                        <option value="">Select a Course</option>
-                        {courses.map(course => (
-                            <option key={course.course_id || course.id} value={course.course_id || course.id}>
-                                {course.course_name}
-                            </option>
-                        ))}
-                    </select>
+                        <button type="submit" className="btn btn-primary">Create account</button>
+                    </form>
 
-                    <button type="submit" className="btn btn-primary">Register</button>
-                </form>
-                <p style={{ marginTop: '20px', textAlign: 'center' }}>
-                    Already have an account? <Link to="/login" style={{ color: '#007bff', textDecoration: 'none' }}>Login here</Link>
-                </p>
+                    <p className="auth-switch">
+                        Already registered? <Link to="/login">Sign in</Link>
+                    </p>
+                </section>
+
+                <aside className="auth-side">
+                    <h3>What you get</h3>
+                    <ul>
+                        <li><span>Personalized dashboard</span><p>Track enrollment details & timelines.</p></li>
+                        <li><span>Secure login</span><p>Role-based access backed by JWT auth.</p></li>
+                        <li><span>Course catalogue</span><p>Switch between cohorts with admin support.</p></li>
+                    </ul>
+                </aside>
             </div>
         </div>
     );

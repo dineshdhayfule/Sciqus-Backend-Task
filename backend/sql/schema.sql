@@ -44,7 +44,7 @@ VALUES ('Computer Science', 'CS101', 48),
 INSERT INTO users (username, password, role, student_id)
 VALUES (
         'admin',
-        '$2a$10$rZ5L7xKJ8qKGz7wW7XqN0eYQXZ5g1h7X8qX9tY5K7mN8oP6rQ4sT2',
+        '$2a$10$B.Np0rz2VtxO/1P94pQ6tuJqvkKTbCNxsbLQXMMGK.IncnSZRsrQq',
         'ADMIN',
         NULL
     );
@@ -57,19 +57,19 @@ VALUES ('John Doe', 'john.doe@example.com', 1),
 INSERT INTO users (username, password, role, student_id)
 VALUES (
         'john.doe',
-        '$2a$10$rZ5L7xKJ8qKGz7wW7XqN0eYQXZ5g1h7X8qX9tY5K7mN8oP6rQ4sT2',
+        '$2a$10$2c3SX1Uo3oHHxVjceYC09enN8.Almhtt3jtfuK8BjjIIlkaJGALt.',
         'STUDENT',
         1
     ),
     (
         'jane.smith',
-        '$2a$10$rZ5L7xKJ8qKGz7wW7XqN0eYQXZ5g1h7X8qX9tY5K7mN8oP6rQ4sT2',
+        '$2a$10$2c3SX1Uo3oHHxVjceYC09enN8.Almhtt3jtfuK8BjjIIlkaJGALt.',
         'STUDENT',
         2
     ),
     (
         'bob.johnson',
-        '$2a$10$rZ5L7xKJ8qKGz7wW7XqN0eYQXZ5g1h7X8qX9tY5K7mN8oP6rQ4sT2',
+        '$2a$10$2c3SX1Uo3oHHxVjceYC09enN8.Almhtt3jtfuK8BjjIIlkaJGALt.',
         'STUDENT',
         3
     );
