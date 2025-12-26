@@ -349,14 +349,3 @@ This project is licensed under the ISC License.
 **Dinesh Dhayfule**
 
 - GitHub: [@dineshdhayfule](https://github.com/dineshdhayfule)
-
-## 🙏 Acknowledgments
-
-- SCIQUS - Innovation at Core
-- Backend Task December 2024
-
----
-
-**🎉 Project Status: Complete & Production Ready**
-
-All mandatory and optional requirements implemented with comprehensive documentation and testing tools.
